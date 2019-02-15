@@ -11,7 +11,6 @@ import {
   loadAllPolygons
 } from './mapmanager';
 
-
 const loadMap = () => {
   const foundStyle = {
     "color": "#85e085",
@@ -22,7 +21,7 @@ const loadMap = () => {
   let element = document.createElement('div');
   element.id = 'map';
   let map = L.map(element)
-  
+
   addTile(map);
   loadAllPolygons(map);
 
@@ -67,8 +66,6 @@ const loadMap = () => {
           L.geoJSON(data, foundStyle).addTo(map);
         });
       } else {
-        let layer = event.layer;
-
         let points = event.layer._latlngs[0].map((element) => {
           return [element.lng, element.lat];
         })
@@ -91,7 +88,10 @@ const loadMap = () => {
     }
 
   });
-  return {element : element, map : map};
+  return {
+    element: element,
+    map: map
+  };
 };
 
 function configureMap() {
