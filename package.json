@@ -11,7 +11,7 @@
     "@turf/boolean-disjoint": "^6.0.2",
     "@turf/boolean-point-in-polygon": "^6.0.1",
     "@turf/helpers": "^6.1.4",
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.5",
     "debug": "~2.6.9",

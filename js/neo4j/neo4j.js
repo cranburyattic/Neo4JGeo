@@ -105,11 +105,10 @@ const add = (poly, uuid, email) => {
 const findByPolygon = (polygon) => {
   return new Promise(function (resolve, reject) {
     let points = getElasticBoundingBox(polygon);
-    runQuery(findByPolygonCypher, {
+    return runQuery(findByPolygonCypher, {
         xValues: points[0],
         yValues: points[1]
-      })
-      .then(data => resolve(findByPolygonHandler(data, polygon)));
+      })(data => resolve(findByPolygonHandler(data, polygon)));
   });
 }
 
@@ -124,25 +123,25 @@ const findByPoint = (lng, lat) => {
       lngs: [nodeRootLevel.lng],
       lats: [nodeRootLevel.lat],
     }
-    return runQuery(findByPointCypher, insert)
-      .then(data => resolve(findByPointHandler(data, lat, lng)));
+    return runQuery(findByPointCypher, insert)(data => resolve(findByPointHandler(data,{lat :lat, lng : lng})))
   });
 }
 
 const findAll = () => {
   return new Promise(function (resolve, reject) {
-    return runQuery(findAllCypher)
-      .then(data => resolve(findAllHandler(data)));
+    return runQuery(findAllCypher)(data => resolve(findAllHandler(data)))
   });
 }
 
 const runQuery = (query, inserts) => {
-  let session = driver.session();
-  return session.run(query, inserts)
-    .then(data => {
-      session.close();
-      return data;
+  return (handleData, context) => {
+    let session = driver.session();
+      return session.run(query, inserts)
+      .then(data => {
+        session.close();
+        return handleData(data, context);
     });
+  }
 }
 
 module.exports = {

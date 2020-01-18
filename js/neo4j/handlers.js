@@ -18,8 +18,8 @@ const findByPolygonHandler = (data, polygon) => {
   return features;
 }
 
-const findByPointHandler = (data, lat, lng) => {
-  const point = turfHelper.point([lng, lat]);
+const findByPointHandler = (data, context) => {
+  const point = turfHelper.point([context.lng, context.lat]);
   let features = [];
   data.records.forEach(record => {
     let poly = convertStringToPolygon(record.get(0).properties.pointString);
